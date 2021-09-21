@@ -6,16 +6,39 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>NPS Explorer</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
 <body>
     <header>
        <h1>National Park Explorer</h1> 
     </header>
-    <div class="container">
+    <div class="container1">
         <div class="row">
-          <div class="col-md-6 offset-md-3">.col-md-6 .offset-md-3</div>
+          <div class="col-md-6 offset-md-3">
+              <h2>Search National Parks by State</h2>
+              <form>
+                <label for="state">Enter 2-digit State:</label>
+                <input type="text" placeholder="Your State" state="state" id="state" />
+               </form>
+          </div>
         </div>
     </div>
+    <div class="container2">
+        <div class="row">
+            <div class="col-md-8 offset-md-1">
+                <p id="Park Description"></p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="park-amenities">
+              Park Amenities
+            </div>
+            <div class="park-forecast">
+              Park Forecast
+            </div>
+          </div>
+    </div>
+
     <script src="./assets/js/script.js"></script>
 </body>
 </html>
