@@ -71,7 +71,7 @@ const NPSApiKey = "EpGp2F62PA1Qt4BOsP2ogdUQLLd9FjcjP5Obxgbw";
 let parkSearch = "";
 let testParkSearch = "Denali";
 // example API link https://developer.nps.gov/api/v1/parks?parkCode=acad&api_key=EpGp2F62PA1Qt4BOsP2ogdUQLLd9FjcjP5Obxgbw
- //goal pull NPS api. 
+//goal pull NPS api. 
 
 
 function searchNPSApi() {
@@ -89,11 +89,10 @@ function searchNPSApi() {
         // console.log(lat,lon);
         // let activities = data[0].activities;
         // console.log(activities);
-        for (i = 0; i < body.data[0].activities.length; i ++) {
+        // for (i = 0; i < body.data[0].activities.length; i ++) {
             // console.log(body.data[0].activities[i].name);
-
             // add in function to generate activity cards
-        } // look up for each loop. ***
+        // } // look up for each loop. ***
         body.data[0].activities.forEach((activity) => { console.log(activity.name) } ) // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
     })
     // .then(function (response){
