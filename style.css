@@ -9,7 +9,9 @@ header {
 section {
     padding: 60px;
     background-image: url(./images.jpg);
-    height: 600px;
+    background-repeat: no-repeat;
+    background-size: 1600px 500px;
+    height: 500px;
     
 }
 
