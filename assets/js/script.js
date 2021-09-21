@@ -1,6 +1,7 @@
 // $(document).ready(function() {
 //     console.log("ready");
 
+
 //show time in current weather section
 // const displayTime = setInterval(myTimer, 1000);
 
@@ -65,6 +66,34 @@
 //     }
 // };
 // 09/20 updates
+// function to create buttons of Parks in the state. Click on one to see weather and 
+const genNationalParkNameButtons = function(NpsName) {
+    //replace query selector with updated El
+    let mainBodyEl = document.querySelector("#body")
+    let searchId = 0;
+    let NpsNameEl = document.createElement("button")
+    NpsNameEl.setAttribute("id", "natPark"+searchId++);
+    NpsNameEl.setAttribute("type", "Submit");
+    NpsNameEl.classList = "btn btn-secondary text-center";
+    NpsNameEl.textContent = NpsName;
+    mainBodyEl.appendChild(NpsNameEl);
+
+};
+
+const genParkActivities = function(parkActivities) {
+    let mainBodyEl = document.querySelector("#body")
+    let searchId = 0;
+    let NpsActivityEl = document.createElement("div")
+    NpsActivityEl.setAttribute("id", "natParkActivity"+searchId++);
+    NpsActivityEl.setAttribute("type", "Submit");
+    NpsActivityEl.classList = "card-title text-center";
+    NpsActivityEl.textContent = parkActivities;
+    mainBodyEl.appendChild(NpsActivityEl);
+
+};
+
+
+
 const NPSBaseLinkState = "https://developer.nps.gov/api/v1/parks?stateCode=";
 const NPSBaseLink = "https://developer.nps.gov/api/v1/parks?"; //removed parkCode= testing
 const NPSAfterPark = "&api_key="; //&limit=100
@@ -72,30 +101,33 @@ const NPSApiKey = "EpGp2F62PA1Qt4BOsP2ogdUQLLd9FjcjP5Obxgbw";
 let parkSearch = "";
 let testParkSearch = "MO";
 // example API link https://developer.nps.gov/api/v1/parks?parkCode=acad&api_key=EpGp2F62PA1Qt4BOsP2ogdUQLLd9FjcjP5Obxgbw
-//goal pull NPS api. 
+//goal pull NPS api.
 
 
-function searchNPSApi() {
+function searchNPSApi(stateSearched) {
     let NPSApiCall = NPSBaseLinkState + testParkSearch + NPSAfterPark + NPSApiKey;
     console.log(NPSApiCall)
     fetch(NPSApiCall)
     .then(response => response.json())
     .then(body => { //test response later
-        console.log(body.data);
-        let NPSId = body.data[0].id;
-        let lon = body.data[0].longitude;
-        let lat = body.data[0].latitude;
-        console.log(lat, lon);
+        // console.log(body.data);
+        // show park names
+        body.data.forEach((parkName) => { genNationalParkNameButtons(parkName.fullName) } )
+        // body.data.forEach((parkName) => { console.log(parkName.fullName) } )
+        // let NPSId = body.data[0].id;
+        // let lon = body.data[0].longitude;
+        // let lat = body.data[0].latitude;
+        // console.log(lat, lon);
+
         // let NPSId = data[0][0].id; get activities https://www.nps.gov/subjects/developer/api-documentation.htm#/activities/getActivities
         // console.log(NPSId);
         // console.log(lat,lon);
         // let activities = data[0].activities;
         // console.log(activities);
-        // for (i = 0; i < body.data[0].activities.length; i ++) {
-            // console.log(body.data[0].activities[i].name);
-            // add in function to generate activity cards
-        // } // look up for each loop. ***
-        body.data[0].activities.forEach((activity) => { console.log(activity.name) } ) // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+
+        //once the park is picked from the list/drop down search then finish the activites. 
+        // body.data[0].activities.forEach((activity) => { console.log(activity.name) } )
+        body.data[0].activities.forEach((activity) => { genParkActivities(activity.name) } ) // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
     })
     //Fetch from State code
 
