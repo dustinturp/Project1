@@ -2,4 +2,29 @@ header {
     text-align: center;
     background-color: rgb(22, 201, 22);
     text-emphasis-color: black;
+    padding: 20px 35px;
+    
 }
+
+section {
+    padding: 60px;
+    background-image: url(./images.jpg);
+    height: 600px;
+    
+}
+
+.container1 {
+    background-color: rgb(22, 201, 22);
+    text-emphasis-color: black;
+    padding: 20px 35px;
+    
+}
+
+.container2 {
+    text-align: center;
+    background-color: rgb(22, 201, 22);
+    text-emphasis-color: black;
+    padding: 20px 35px;
+    
+}
+
