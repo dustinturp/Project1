@@ -1,7 +1,6 @@
 // $(document).ready(function() {
 //     console.log("ready");
 
-
 //show time in current weather section
 // const displayTime = setInterval(myTimer, 1000);
 
@@ -67,18 +66,20 @@
 // };
 // 09/20 updates
 // function to create buttons of Parks in the state. Click on one to see weather and 
+let NpsNameEl = document.createElement("button");
 const genNationalParkNameButtons = function(NpsName) {
-    //replace query selector with updated El
-    let mainBodyEl = document.querySelector("#body")
+    let mainBodyEl = document.querySelector("#body");
     let searchId = 0;
-    let NpsNameEl = document.createElement("button")
     NpsNameEl.setAttribute("id", "natPark"+searchId++);
     NpsNameEl.setAttribute("type", "Submit");
     NpsNameEl.classList = "btn btn-secondary text-center";
     NpsNameEl.textContent = NpsName;
     mainBodyEl.appendChild(NpsNameEl);
+}; 
 
-};
+const addLatLonToParkName = function(latLon) {
+    NpsNameEl.setAttribute("data-latlon", latLon)
+}
 
 const genParkActivities = function(parkActivities) {
     let mainBodyEl = document.querySelector("#body")
@@ -89,10 +90,7 @@ const genParkActivities = function(parkActivities) {
     NpsActivityEl.classList = "card-title text-center";
     NpsActivityEl.textContent = parkActivities;
     mainBodyEl.appendChild(NpsActivityEl);
-
 };
-
-
 
 const NPSBaseLinkState = "https://developer.nps.gov/api/v1/parks?stateCode=";
 const NPSBaseLink = "https://developer.nps.gov/api/v1/parks?"; //removed parkCode= testing
@@ -103,6 +101,8 @@ let testParkSearch = "MO";
 // example API link https://developer.nps.gov/api/v1/parks?parkCode=acad&api_key=EpGp2F62PA1Qt4BOsP2ogdUQLLd9FjcjP5Obxgbw
 //goal pull NPS api.
 
+// blank list to hold park names
+let parkNamesReturned = [];
 
 function searchNPSApi(stateSearched) {
     let NPSApiCall = NPSBaseLinkState + testParkSearch + NPSAfterPark + NPSApiKey;
@@ -112,9 +112,14 @@ function searchNPSApi(stateSearched) {
     .then(body => { //test response later
         console.log(body.data);
         // show park names
-        body.data.forEach((parkName) => { genNationalParkNameButtons(parkName.fullName) } )
-        // body.data.forEach((parkName) => { console.log(parkName.fullName) } )
+        // body.data.forEach((parkName) => {genNationalParkNameButtons(parkName.fullName) } );
+        // body.data.forEach((parkName) => {parkNamesReturned.push(parkName.fullName) } );
+        // console.log(parkNamesReturned);
+        console.log("Test begin");
+        body.data.forEach((parkName) => {console.log(parkName.fullName), console.log(parkName.latLong) } );
         // let NPSId = body.data[0].id;
+        // let latLong = body.data[0].latLong;
+        console.log(body.data[0].latLong)
         let lon = body.data[0].longitude;
         let lat = body.data[0].latitude;
         // console.log(lat, lon);
