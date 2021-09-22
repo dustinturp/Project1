@@ -64,7 +64,14 @@
 //         cityNameSubmit(cityName);
 //     }
 // };
-// 09/20 updates
+// function to accept onclick and splice lat lon attribute
+const myButtonDataPull = function(){
+// on click event
+let buttonClickedEl = document.querySelector("#specialid")
+let latLonFresh = buttonClickedEl.val
+}
+
+
 // function to create buttons of Parks in the state. Click on one to see weather and 
 let searchId = 0;
 const genNationalParkNameButtons = function(NpsName, latLon) {
@@ -79,7 +86,7 @@ const genNationalParkNameButtons = function(NpsName, latLon) {
 }; 
 
 // const addLatLonToParkName = function(latLon) {
-//     NpsNameEl.setAttribute("data-latlon", latLon)
+// NpsNameEl.setAttribute("data-latlon", latLon)
 // }
 
 const genParkActivities = function(parkActivities) {
@@ -119,14 +126,14 @@ function searchNPSApi(stateSearched) {
         body.data.forEach((parkName) => {parkNamesReturned.push(parkName.fullName) } );
         //update lat long array to match against
         body.data.forEach((saveLatLon) => {parkLatLongsReturned.push(saveLatLon.latLong) } );
-        // console.log(parkNamesReturned);
+        console.log(parkNamesReturned);
         console.log("Test begin");
         // body.data.forEach((parkName) => {console.log(parkName.fullName), console.log(parkName.latLong) } );
         // body.data.forEach((parkName) => {console.log(parkName.fullName), addLatLonToParkName(parkName.latLong) } );
         body.data.forEach((parkName) => { genNationalParkNameButtons(parkName.fullName, parkName.latLong) } );
         // let NPSId = body.data[0].id;
         // let latLong = body.data[0].latLong;
-        console.log(body.data[0].latLong)
+        // console.log(body.data[0].latLong)
         let lon = body.data[0].longitude;
         let lat = body.data[0].latitude;
         // console.log(lat, lon);
@@ -136,9 +143,13 @@ function searchNPSApi(stateSearched) {
         // console.log(lat,lon);
         // let activities = data[0].activities;
         // console.log(activities);
-
-        //once the park is picked from the list/drop down search then finish the activites. 
+        //once the park is picked from the list/drop down search then finish the activities. 
         // body.data[0].activities.forEach((activity) => { console.log(activity.name) } )
+
+        //need to generate park activities based on user selection. 
+        // get position in array containing all lat lon that user selects. match then get index.
+        // pass index into  below to get activities available.
+
         body.data[0].activities.forEach((activity) => { genParkActivities(activity.name) } ) // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
     })
     //Fetch from State code
