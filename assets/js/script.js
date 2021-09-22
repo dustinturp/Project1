@@ -110,13 +110,13 @@ function searchNPSApi(stateSearched) {
     fetch(NPSApiCall)
     .then(response => response.json())
     .then(body => { //test response later
-        // console.log(body.data);
+        console.log(body.data);
         // show park names
         body.data.forEach((parkName) => { genNationalParkNameButtons(parkName.fullName) } )
         // body.data.forEach((parkName) => { console.log(parkName.fullName) } )
         // let NPSId = body.data[0].id;
-        // let lon = body.data[0].longitude;
-        // let lat = body.data[0].latitude;
+        let lon = body.data[0].longitude;
+        let lat = body.data[0].latitude;
         // console.log(lat, lon);
 
         // let NPSId = data[0][0].id; get activities https://www.nps.gov/subjects/developer/api-documentation.htm#/activities/getActivities
