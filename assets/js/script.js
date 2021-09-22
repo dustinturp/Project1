@@ -66,10 +66,9 @@
 // };
 // 09/20 updates
 // function to create buttons of Parks in the state. Click on one to see weather and 
-
+let searchId = 0;
 const genNationalParkNameButtons = function(NpsName, latLon) {
     let mainBodyEl = document.querySelector("#body");
-    let searchId = 0;
     let NpsNameEl = document.createElement("button");
     NpsNameEl.setAttribute("id", "natPark"+searchId++);
     NpsNameEl.setAttribute("type", "Submit");
@@ -105,6 +104,7 @@ let testParkSearch = "MO";
 
 // blank list to hold park names
 let parkNamesReturned = [];
+let parkLatLongsReturned = [];
 
 function searchNPSApi(stateSearched) {
     let NPSApiCall = NPSBaseLinkState + testParkSearch + NPSAfterPark + NPSApiKey;
@@ -115,7 +115,10 @@ function searchNPSApi(stateSearched) {
         console.log(body.data);
         // show park names
         // body.data.forEach((parkName) => {genNationalParkNameButtons(parkName.fullName) } );
-        // body.data.forEach((parkName) => {parkNamesReturned.push(parkName.fullName) } );
+        //update park name array
+        body.data.forEach((parkName) => {parkNamesReturned.push(parkName.fullName) } );
+        //update lat long array to match against
+        body.data.forEach((saveLatLon) => {parkLatLongsReturned.push(saveLatLon.latLong) } );
         // console.log(parkNamesReturned);
         console.log("Test begin");
         // body.data.forEach((parkName) => {console.log(parkName.fullName), console.log(parkName.latLong) } );
