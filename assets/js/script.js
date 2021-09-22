@@ -66,20 +66,22 @@
 // };
 // 09/20 updates
 // function to create buttons of Parks in the state. Click on one to see weather and 
-let NpsNameEl = document.createElement("button");
-const genNationalParkNameButtons = function(NpsName) {
+
+const genNationalParkNameButtons = function(NpsName, latLon) {
     let mainBodyEl = document.querySelector("#body");
     let searchId = 0;
+    let NpsNameEl = document.createElement("button");
     NpsNameEl.setAttribute("id", "natPark"+searchId++);
     NpsNameEl.setAttribute("type", "Submit");
     NpsNameEl.classList = "btn btn-secondary text-center";
     NpsNameEl.textContent = NpsName;
+    NpsNameEl.setAttribute("data-latlon", latLon)
     mainBodyEl.appendChild(NpsNameEl);
 }; 
 
-const addLatLonToParkName = function(latLon) {
-    NpsNameEl.setAttribute("data-latlon", latLon)
-}
+// const addLatLonToParkName = function(latLon) {
+//     NpsNameEl.setAttribute("data-latlon", latLon)
+// }
 
 const genParkActivities = function(parkActivities) {
     let mainBodyEl = document.querySelector("#body")
@@ -116,7 +118,9 @@ function searchNPSApi(stateSearched) {
         // body.data.forEach((parkName) => {parkNamesReturned.push(parkName.fullName) } );
         // console.log(parkNamesReturned);
         console.log("Test begin");
-        body.data.forEach((parkName) => {console.log(parkName.fullName), console.log(parkName.latLong) } );
+        // body.data.forEach((parkName) => {console.log(parkName.fullName), console.log(parkName.latLong) } );
+        // body.data.forEach((parkName) => {console.log(parkName.fullName), addLatLonToParkName(parkName.latLong) } );
+        body.data.forEach((parkName) => { genNationalParkNameButtons(parkName.fullName, parkName.latLong) } );
         // let NPSId = body.data[0].id;
         // let latLong = body.data[0].latLong;
         console.log(body.data[0].latLong)
