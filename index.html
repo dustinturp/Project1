@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,63 +9,57 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="./style.css" />
 </head>
+
 <body>
     <section class="header">
-    <header>
-       <h1>National Park Explorer</h1> 
-    </header>
-         <div class="container1">
+        <header>
+            <h1>National Park Explorer</h1>
+        </header>
+        <div class="container1">
             <div class="row">
-              <div class="col-md-6 offset-md-3">
-                  <h2>Search National Parks by State</h2>
-                  <form>
-                    <label for="state">Enter 2-digit State:</label>
-                    <input type="text" placeholder="Your State" id="state" />
-                   </form>
-                   <button type="submit">
-                    Start Search!
-                  </button>
-              </div>
+                <div class="col-md-6 offset-md-3">
+                    <h2>Search National Parks by State</h2>
+                    <form>
+                        <label for="state">Enter 2-digit State:</label>
+                        <input type="text" placeholder="Your State" id="state" onChange= "change_stateName(this.value);" />
+                    </form>
+                    <button type="submit" onclick="searchParks();">
+                        Start Search!
+                    </button>
+                </div>
             </div>
         </div>
+
+
     </section>
     <div class="container2">
-            <div class="row" >
-                <h2 class="col-md-6 offset-md-3">Park Description</h2>
-// Park Description added Here                
-                <p id="Park Description"></p>
-            </div>
-            <div class="row">
-                <div class="col-md-6" >
-// Park Amenities Added Here                    
-                    <h3 id=""park-amenities"">
-                      Park Amenities
-                    </h3>
-                </div>
-                <div class="col-md-6">
-                    <h3  id=""park-forecast"">
-                        Park Forecast
-                    </h3>
-                    <div>
-                        <div class="row">
-                          <div class="col-lg-12">
-                            <h1>Weather Dashboard</h1>
-                          </div>
-                        </div>
-                    </div>
-                      <div class="container-fluid" style="max-width: 1400px">
-                        <div class="row">
-                          <div class="col-12 col-lg-9">
-                              <div id="today"></div>
-                              <h4 id="forecastName"></h4>
-                              <div id="forecast"></div>
-                          </div>
-                        </div>
+        <div class="row">
+            <div class="col-md-6 offset-md-3"><h2>Park</h2>
+            <h3 id= "parkName"></h3>    
+            <p id="parkDescription"></p></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <h3>
+                    Park Amenities
+                </h3>
+                <div id="activities">
                     
                 </div>
             </div>
+            <div class="col-md-6">
+                <h3 id="" park-forecast"">
+                    Park Forecast
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div id="body">
+    
     </div>
 
     <script src="./assets/js/script.js"></script>
 </body>
+
 </html>
