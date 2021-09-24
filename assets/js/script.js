@@ -64,17 +64,21 @@
 //         cityNameSubmit(cityName);
 //     }
 // };
-// function to accept onclick and splice lat lon attribute
-const myButtonDataPull = function(){
-// on click event
-let buttonClickedEl = document.querySelector("#specialid")
-let latLonFresh = buttonClickedEl.val
-}
-
-
+// 09/20 updates
 // function to create buttons of Parks in the state. Click on one to see weather and 
 let searchId = 0;
-const genNationalParkNameButtons = function(NpsName, latLon) {
+//pulls descripion, activities,and parkName and places them on-click
+const createOnPackClick = function(activities,description,parkName){
+   return function () {
+       document.querySelector("#parkName").innerHTML = parkName;
+       document.querySelector("#parkDescription").innerHTML = description;
+    let mainBodyEl = document.querySelector("#activities");
+    mainBodyEl.innerHTML= "";
+     activities.forEach((activity) => { genParkActivities(activity.name) } );
+   }
+}
+
+const genNationalParkNameButtons = function(NpsName, latLon, activities, description) {
     let mainBodyEl = document.querySelector("#body");
     let NpsNameEl = document.createElement("button");
     NpsNameEl.setAttribute("id", "natPark"+searchId++);
@@ -82,15 +86,17 @@ const genNationalParkNameButtons = function(NpsName, latLon) {
     NpsNameEl.classList = "btn btn-secondary text-center";
     NpsNameEl.textContent = NpsName;
     NpsNameEl.setAttribute("data-latlon", latLon)
+    NpsNameEl.addEventListener("click", createOnPackClick(activities, description,NpsName));
     mainBodyEl.appendChild(NpsNameEl);
 }; 
 
 // const addLatLonToParkName = function(latLon) {
-// NpsNameEl.setAttribute("data-latlon", latLon)
+//     NpsNameEl.setAttribute("data-latlon", latLon)
 // }
 
 const genParkActivities = function(parkActivities) {
-    let mainBodyEl = document.querySelector("#body")
+    let mainBodyEl = document.querySelector("#activities");
+
     let searchId = 0;
     let NpsActivityEl = document.createElement("div")
     NpsActivityEl.setAttribute("id", "natParkActivity"+searchId++);
@@ -100,12 +106,36 @@ const genParkActivities = function(parkActivities) {
     mainBodyEl.appendChild(NpsActivityEl);
 };
 
+//
+
+
+
+
+//
 const NPSBaseLinkState = "https://developer.nps.gov/api/v1/parks?stateCode=";
 const NPSBaseLink = "https://developer.nps.gov/api/v1/parks?"; //removed parkCode= testing
 const NPSAfterPark = "&api_key="; //&limit=100
 const NPSApiKey = "EpGp2F62PA1Qt4BOsP2ogdUQLLd9FjcjP5Obxgbw";
 let parkSearch = "";
-let testParkSearch = "MO";
+let testParkSearch = "";
+function change_stateName(value){
+    testParkSearch = value;
+}
+function searchParks() {
+    searchNPSApi(testParkSearch);
+
+}
+
+//
+function getState(selectObject) {
+    let value = selectObject.value;
+    let testParkSearch=value;
+    document.getElementById("state").innerHTML = "You selected: " + value;
+    console.log(value);
+
+}
+
+//
 // example API link https://developer.nps.gov/api/v1/parks?parkCode=acad&api_key=EpGp2F62PA1Qt4BOsP2ogdUQLLd9FjcjP5Obxgbw
 //goal pull NPS api.
 
@@ -126,14 +156,17 @@ function searchNPSApi(stateSearched) {
         body.data.forEach((parkName) => {parkNamesReturned.push(parkName.fullName) } );
         //update lat long array to match against
         body.data.forEach((saveLatLon) => {parkLatLongsReturned.push(saveLatLon.latLong) } );
-        console.log(parkNamesReturned);
+        // console.log(parkNamesReturned);
         console.log("Test begin");
         // body.data.forEach((parkName) => {console.log(parkName.fullName), console.log(parkName.latLong) } );
+        document.querySelector("#body").innerHTML = "";
+
         // body.data.forEach((parkName) => {console.log(parkName.fullName), addLatLonToParkName(parkName.latLong) } );
-        body.data.forEach((parkName) => { genNationalParkNameButtons(parkName.fullName, parkName.latLong) } );
+        //Added activities and description
+        body.data.forEach((parkName) => { genNationalParkNameButtons(parkName.fullName, parkName.latLong, parkName.activities, parkName.description) } );
         // let NPSId = body.data[0].id;
         // let latLong = body.data[0].latLong;
-        // console.log(body.data[0].latLong)
+        console.log(body.data[0].latLong)
         let lon = body.data[0].longitude;
         let lat = body.data[0].latitude;
         // console.log(lat, lon);
@@ -143,14 +176,10 @@ function searchNPSApi(stateSearched) {
         // console.log(lat,lon);
         // let activities = data[0].activities;
         // console.log(activities);
-        //once the park is picked from the list/drop down search then finish the activities. 
+
+        //once the park is picked from the list/drop down search then finish the activites. 
         // body.data[0].activities.forEach((activity) => { console.log(activity.name) } )
-
-        //need to generate park activities based on user selection. 
-        // get position in array containing all lat lon that user selects. match then get index.
-        // pass index into  below to get activities available.
-
-        body.data[0].activities.forEach((activity) => { genParkActivities(activity.name) } ) // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
     })
     //Fetch from State code
 
@@ -167,7 +196,5 @@ function searchNPSApi(stateSearched) {
     //     console.log(lat,lon);
     // })
 }
-searchNPSApi();
 
 // NPS noties needs [0].actiities for activities create little cards with the name of them.
-

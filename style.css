@@ -1,0 +1,36 @@
+header {
+    text-align: center;
+    background-color: #004c21;
+    text-emphasis-color: white;
+    padding: 20px 35px;
+    width: 800px;
+    align-content: center;
+    color:white;
+}
+
+section {
+    padding: 60px;
+    background-image: url(./images.jpg);
+    background-repeat: no-repeat;
+    background-size: 1600px 500px;
+    height: 500px;
+    
+}
+
+.container1 {
+    background-color: #004c21;
+    text-emphasis-color: white;
+    padding: 20px 35px;
+    width: 800px;
+    align-content: center;
+    color: white
+    
+}
+
+.container2 {
+    text-align: center;
+    background-color: #004c21;
+    text-emphasis-color: white;
+    padding: 20px 35px;
+    color:white
+}
