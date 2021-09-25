@@ -49,3 +49,19 @@ header {
     /* padding: 20px 35px; */
     color:white
 }
+
+.row {
+    overflow: scroll;
+    text-overflow: ellipsis;
+}
+.button-text {
+    width: 295px;
+    overflow: hidden;
+    white-space: nowrap;
+    display: block;
+    text-overflow: ellipsis;
+}
+
+/* .btn-secondary {
+    text-overflow: ellipsis;
+} */

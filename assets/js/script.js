@@ -81,13 +81,16 @@ const createOnPackClick = function(activities,description,parkName){
 const genNationalParkNameButtons = function(NpsName, latLon, activities, description) {
     let mainBodyEl = document.querySelector("#body");
     let NpsNameEl = document.createElement("button");
+    let npsNameContainerEl = document.createElement("span");
     NpsNameEl.setAttribute("id", "natPark"+searchId++);
     NpsNameEl.setAttribute("type", "Submit");
-    NpsNameEl.classList = "btn btn-secondary text-center";
-    NpsNameEl.textContent = NpsName;
+    NpsNameEl.classList = "btn btn-secondary text-center col-6";
+    npsNameContainerEl.classList = "button-text"
+    npsNameContainerEl.textContent = NpsName;
     NpsNameEl.setAttribute("data-latlon", latLon)
     NpsNameEl.addEventListener("click", createOnPackClick(activities, description,NpsName));
     mainBodyEl.appendChild(NpsNameEl);
+    NpsNameEl.appendChild(npsNameContainerEl)
 }; 
 
 // const addLatLonToParkName = function(latLon) {
