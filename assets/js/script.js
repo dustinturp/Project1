@@ -7,20 +7,22 @@ let parkNameWeather = "";
 // 
 let parkLatLon = document.querySelector("#park-buttons")
 
+
+//rewrite functions to use for loop like createOnPackClick
 function displayCurrent(current, parkNameWeather) {
-    document.getElementsByClassName("future-forecast").innerHTML = "";
+    document.getElementsByClassName("title").innerHTML = "";
     console.log(parkNameWeather);
-    let cityTitle = document.createElement("h3");
-    cityTitle.setAttribute("class", "title");
-    cityTitle.textContent = parkNameWeather //`${parkNameWeather} (${formatDate(present)})`
-    parkWeather.appendChild(cityTitle);
+    // let cityTitle = document.createElement("h3");
+    // cityTitle.setAttribute("class", "title");
+    // cityTitle.textContent = parkNameWeather //`${parkNameWeather} (${formatDate(present)})`
+    // // parkWeather.appendChild(cityTitle);
     let weatherInfo = document.createElement("p")
     weatherInfo.setAttribute("class", "info")
     weatherInfo.innerHTML = `<img src="http://openweathermap.org/img/wn/10d@2x.png"></img><div> Temp: ${current.temp} F</div>
     <div> Wind: ${current.wind_speed} MPH</div>
     <div> Humidity: ${current.humidity}%</div>
     <div> UV Index: ${current.uvi}</div>`;
-    cityTitle.appendChild(weatherInfo);
+    parkWeather.appendChild(weatherInfo);
   }
   
   function displayFiveDay(daily) {
@@ -55,7 +57,7 @@ let selectedLatLonArr = []
 const genWeatherCards = parkLatLon.addEventListener('click', function(event) {
     // console.log(this);
     // console.log(event.target);
-
+    document.getElementsByClassName("future-forecast").innerHTML = "";
     let selectedLatLon = event.target.getAttribute("data-lat-lon")
     parkNameWeather = event.target.innerText; //.textContent .innerText .value
     console.log(parkNameWeather);
