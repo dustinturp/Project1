@@ -52,7 +52,8 @@ header {
 
 .row {
     overflow: scroll;
-    text-overflow: ellipsis;
+    /* text-overflow: ellipsis; */
+    /* padding: 20px; */
 }
 .button-text {
     width: 295px;
