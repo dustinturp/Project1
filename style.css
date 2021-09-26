@@ -38,7 +38,7 @@ header {
     /* padding: 20px 35px; */
     /* width: 800px; */
      /* align-content: center; */
-    color: white 
+    color: white; 
     
 }
 
@@ -57,10 +57,17 @@ header {
 }
 .button-text {
     width: 295px;
-    overflow: hidden;
-    white-space: nowrap;
+    /* overflow: hidden; */
+    white-space: wrap; 
     display: block;
     text-overflow: ellipsis;
+    /* white-space: normal; */
+    word-wrap: break-word;
+}
+
+.park-button {
+    white-space: wrap; 
+    word-wrap: break-word;
 }
 
 /* .btn-secondary {

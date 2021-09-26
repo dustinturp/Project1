@@ -2,24 +2,39 @@
 
 const weatherApiRootUrl = 'https://api.openweathermap.org';
 const weatherApiKey = 'd91f911bcf2c0f925fb6535547a5ddc9';
-
+// 
 let parkLatLon = document.querySelector("#park-buttons")
+// let parkLatLon = document.querySelector(".park-button")
+
 
 // pull lat lon from button clicked. enter into weather api.
 // return weather if possible for lat lon
 
-
+let selectedLatLonArr = []
 const genWeatherCards = parkLatLon.addEventListener('click', function(event) {
-    // let parkLatLon = event.document.querySelector("#park-buttons")
+    // console.log(this);
+    // console.log(event.target);
+
     let selectedLatLon = event.target.getAttribute("data-lat-lon")
-    // split lat lon into separate coordinates. 
+    console.log(selectedLatLon);
+    // split lat -long from button
+    selectedLatLonArr = selectedLatLon.split(",")
+    console.log("split lat lon", selectedLatLonArr);
+    //assign lat long to variables
+    let latPark = selectedLatLonArr[0].substr(4,9);
+    console.log(latPark);
+    let lonPark = selectedLatLonArr[1].substr(6,9);
+    console.log(lonPark);
+    // weather begin
+    fetch(`${weatherApiRootUrl}/data/2.5/onecall?lat=${latPark}&lon=${lonPark}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`)
+    .then(response => response.json())
+    .then(body => {
+        const current = body.current;
+        const daily = body.daily;
+        console.log(current, daily)
+    })
     
 
-    // console.log(selectedLatLon)
-    //get value from click
-    // parkLatLon
-    // parkLatLon.addEventListener("click",console.log("button clicked"))
-    console.log("button clicked") 
 })
 // end weather section
 
@@ -39,16 +54,13 @@ const createOnPackClick = function(activities,description,parkName){
 const genNationalParkNameButtons = function(NpsName, latLon, activities, description) {
     let mainBodyEl = document.querySelector("#park-buttons");
     let NpsNameEl = document.createElement("button");
-    let npsNameContainerEl = document.createElement("span");
     NpsNameEl.setAttribute("id", "natPark"+searchId++);
     NpsNameEl.setAttribute("type", "Submit");
-    NpsNameEl.classList = "btn btn-secondary text-center col-6";
-    npsNameContainerEl.classList = "button-text"
-    npsNameContainerEl.textContent = NpsName;
+    NpsNameEl.classList = "btn btn-secondary text-center col-6 park-button";
+    NpsNameEl.textContent = NpsName;
     NpsNameEl.setAttribute("data-lat-lon", latLon)
     NpsNameEl.addEventListener("click", createOnPackClick(activities, description,NpsName));
     mainBodyEl.appendChild(NpsNameEl);
-    NpsNameEl.appendChild(npsNameContainerEl)
 }; 
 
 // const addLatLonToParkName = function(latLon) {
