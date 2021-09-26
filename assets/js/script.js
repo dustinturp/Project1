@@ -2,9 +2,50 @@
 
 const weatherApiRootUrl = 'https://api.openweathermap.org';
 const weatherApiKey = 'd91f911bcf2c0f925fb6535547a5ddc9';
+const parkWeather = document.querySelector('#park-forecast');
+let parkNameWeather = "";
 // 
 let parkLatLon = document.querySelector("#park-buttons")
-// let parkLatLon = document.querySelector(".park-button")
+
+function displayCurrent(current, parkNameWeather) {
+    document.getElementsByClassName("future-forecast").innerHTML = "";
+    console.log(parkNameWeather);
+    let cityTitle = document.createElement("h3");
+    cityTitle.setAttribute("class", "title");
+    cityTitle.textContent = parkNameWeather //`${parkNameWeather} (${formatDate(present)})`
+    parkWeather.appendChild(cityTitle);
+    let weatherInfo = document.createElement("p")
+    weatherInfo.setAttribute("class", "info")
+    weatherInfo.innerHTML = `<img src="http://openweathermap.org/img/wn/10d@2x.png"></img><div> Temp: ${current.temp} F</div>
+    <div> Wind: ${current.wind_speed} MPH</div>
+    <div> Humidity: ${current.humidity}%</div>
+    <div> UV Index: ${current.uvi}</div>`;
+    cityTitle.appendChild(weatherInfo);
+  }
+  
+  function displayFiveDay(daily) {
+    // console.log(daily)
+    //clear existing park forecast
+    document.getElementsByClassName("future-forecast").innerHTML = "";
+    const forecastName = document.querySelector('.future-forecast');
+    console.log(forecastName);
+    // 
+    forecastName.textContent = "5-Day Forecast:";
+    parkWeather.appendChild(forecastName);
+    for (let i =1; i < 6; i++) {
+      let weatherInfo = document.createElement("div")
+      const weatherIcon = document.createElement("img");
+      const icon = daily[i].weather[0].icon
+      console.log(icon);
+      weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/10d@2x.png");
+      weatherInfo.setAttribute("class", "info")
+      weatherInfo.innerHTML = `<img src="http://openweathermap.org/img/wn/${icon}@2x.png"></img><p></p><p> Temp: ${daily[i].temp.day} F</p>
+      <p> Wind: ${daily[i].wind_speed} MPH</p>
+      <p> Humidity: ${daily[i].humidity}%</p>
+      <p> UV Index: ${daily[i].uvi}</p>`;
+    parkWeather.appendChild(weatherInfo);
+    }
+  }
 
 
 // pull lat lon from button clicked. enter into weather api.
@@ -16,6 +57,8 @@ const genWeatherCards = parkLatLon.addEventListener('click', function(event) {
     // console.log(event.target);
 
     let selectedLatLon = event.target.getAttribute("data-lat-lon")
+    parkNameWeather = event.target.innerText; //.textContent .innerText .value
+    console.log(parkNameWeather);
     console.log(selectedLatLon);
     // split lat -long from button
     selectedLatLonArr = selectedLatLon.split(",")
@@ -31,16 +74,19 @@ const genWeatherCards = parkLatLon.addEventListener('click', function(event) {
     .then(body => {
         const current = body.current;
         const daily = body.daily;
-        console.log(current, daily)
+        console.log("current", current, "daily Weather", daily)
+        displayCurrent(current, parkNameWeather);
+        displayFiveDay(daily);
     })
-    
+    // displayCurrent(current, parkNameWeather);
+    // displayFiveDay(daily);
 
 })
 // end weather section
 
 // function to create buttons of Parks in the state. Click on one to see weather and 
 let searchId = 1;
-//pulls descripion, activities,and parkName and places them on-click
+//pulls description, activities,and parkName and places them on-click
 const createOnPackClick = function(activities,description,parkName){
    return function () {
        document.querySelector("#parkName").innerHTML = parkName;
