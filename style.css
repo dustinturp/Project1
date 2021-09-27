@@ -29,7 +29,6 @@ header {
     background-size: 1600px 500px;
     height: 500px;
     
-    
 }
 
  .container {
@@ -73,3 +72,7 @@ header {
 /* .btn-secondary {
     text-overflow: ellipsis;
 } */
+#activities {
+    display: flex;
+    flex-wrap: wrap;
+}

@@ -9,29 +9,31 @@ let parkLatLon = document.querySelector("#park-buttons")
 
 
 //rewrite functions to use for loop like createOnPackClick
-function displayCurrent(current, parkNameWeather) {
+
+function displayCurrent(current) {
     document.getElementsByClassName("title").innerHTML = "";
-    console.log(parkNameWeather);
-    // let cityTitle = document.createElement("h3");
-    // cityTitle.setAttribute("class", "title");
-    // cityTitle.textContent = parkNameWeather //`${parkNameWeather} (${formatDate(present)})`
-    // // parkWeather.appendChild(cityTitle);
+    currentWeatherText = document.createElement("h4")
+    currentWeatherText.textContent = "Current Weather"
+    // console.log(parkNameWeather);
     let weatherInfo = document.createElement("p")
     weatherInfo.setAttribute("class", "info")
     weatherInfo.innerHTML = `<img src="http://openweathermap.org/img/wn/10d@2x.png"></img><div> Temp: ${current.temp} F</div>
     <div> Wind: ${current.wind_speed} MPH</div>
     <div> Humidity: ${current.humidity}%</div>
     <div> UV Index: ${current.uvi}</div>`;
+    parkWeather.appendChild(currentWeatherText);
     parkWeather.appendChild(weatherInfo);
   }
   
   function displayFiveDay(daily) {
+    currentForecastText = document.createElement("h4")
+    currentForecastText.textContent = "Current Weather:"
     // console.log(daily)
     //clear existing park forecast
-    document.getElementsByClassName("future-forecast").innerHTML = "";
+    // document.getElementsByClassName("future-forecast").innerHTML = "";
     const forecastName = document.querySelector('.future-forecast');
-    console.log(forecastName);
-    // 
+    // console.log(forecastName);
+    
     forecastName.textContent = "5-Day Forecast:";
     parkWeather.appendChild(forecastName);
     for (let i =1; i < 6; i++) {
@@ -55,12 +57,9 @@ function displayCurrent(current, parkNameWeather) {
 
 let selectedLatLonArr = []
 const genWeatherCards = parkLatLon.addEventListener('click', function(event) {
-    // console.log(this);
-    // console.log(event.target);
-    document.getElementsByClassName("future-forecast").innerHTML = "";
-    let selectedLatLon = event.target.getAttribute("data-lat-lon")
-    parkNameWeather = event.target.innerText; //.textContent .innerText .value
-    console.log(parkNameWeather);
+    // console.log(this); console.log(event.target);
+    // document.getElementsByClassName("future-forecast").innerHTML = "";
+    let selectedLatLon = event.target.getAttribute("data-lat-lon") // parkNameWeather = event.target.innerText; //console.log(parkNameWeather);
     console.log(selectedLatLon);
     // split lat -long from button
     selectedLatLonArr = selectedLatLon.split(",")
@@ -70,19 +69,16 @@ const genWeatherCards = parkLatLon.addEventListener('click', function(event) {
     console.log(latPark);
     let lonPark = selectedLatLonArr[1].substr(6,9);
     console.log(lonPark);
-    // weather begin
+    // weather call begin
     fetch(`${weatherApiRootUrl}/data/2.5/onecall?lat=${latPark}&lon=${lonPark}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`)
     .then(response => response.json())
     .then(body => {
         const current = body.current;
         const daily = body.daily;
         console.log("current", current, "daily Weather", daily)
-        displayCurrent(current, parkNameWeather);
+        displayCurrent(current);
         displayFiveDay(daily);
     })
-    // displayCurrent(current, parkNameWeather);
-    // displayFiveDay(daily);
-
 })
 // end weather section
 
@@ -105,6 +101,7 @@ const genNationalParkNameButtons = function(NpsName, latLon, activities, descrip
     NpsNameEl.setAttribute("id", "natPark"+searchId++);
     NpsNameEl.setAttribute("type", "Submit");
     NpsNameEl.classList = "btn btn-secondary text-center col-6 park-button";
+    // add if statement to shorten park name if over X amount of characters
     NpsNameEl.textContent = NpsName;
     NpsNameEl.setAttribute("data-lat-lon", latLon)
     NpsNameEl.addEventListener("click", createOnPackClick(activities, description,NpsName));
@@ -169,7 +166,6 @@ function searchNPSApi(stateSearched) {
         //update lat long array to match against
         body.data.forEach((saveLatLon) => {parkLatLongsReturned.push(saveLatLon.latLong) } );
         // console.log(parkLatLongsReturned);
-        // console.log("Test begin");
         // body.data.forEach((parkName) => {console.log(parkName.fullName), console.log(parkName.latLong) } );
         document.querySelector("#park-buttons").innerHTML = "";
         // body.data.forEach((parkName) => {console.log(parkName.fullName), addLatLonToParkName(parkName.latLong) } );
