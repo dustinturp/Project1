@@ -1,73 +1,90 @@
-// $(document).ready(function() {
-//     console.log("ready");
+// weather section
 
-//show time in current weather section
-// const displayTime = setInterval(myTimer, 1000);
+const weatherApiRootUrl = 'https://api.openweathermap.org';
+const weatherApiKey = 'd91f911bcf2c0f925fb6535547a5ddc9';
+const parkWeather = document.querySelector('#park-forecast');
+let parkNameWeather = "";
+// 
+let parkLatLon = document.querySelector("#park-buttons")
 
-// function myTimer() {
-//   let d = new Date();
-//   let t = d.toLocaleTimeString();
-//   let date = d.toLocaleDateString();
-//   document.getElementById("current-day-weather").innerHTML = date + "    " + t;
-// };
 
-// may not need lat and lon for weather api can accept cities. 
-// const weatherApiKey = "889a9dfc6fa2d18eaaf5c4787cb0cb11";
-// const weatherBaseApiUrl = 'https://api.openweathermap.org'
-// //example call https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=889a9dfc6fa2d18eaaf5c4787cb0cb11
+//rewrite functions to use for loop like createOnPackClick
 
-// function searchCityWeather(cityName) {
-//     console.log("City Name is", cityName);
-//     // https://api.openweathermap.org/data/2.5/weather?q="+ cityName + "&limit=5&appid=" + apiKey https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=889a9dfc6fa2d18eaaf5c4787cb0cb11"
-//     let apiCall ="https://api.openweathermap.org/data/2.5/weather?q=" + cityName + "&limit=5&appid=" + apiKey;
-//     console.log("API call", apiCall)
-//     fetch(apiCall)
-//     .then(function (response) {
-//         if(response.ok);
-//         console.log(response);
-//         return response.json()
-//     })
-//     .then(function (body){
-//         console.log('body', body);
-//         let lon = body[0].lon;
-//         let lat = body[0].lat;
-//         console.log(lat,lon);
-//         return fetch(`${baseApiUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}`)
-//         //return fetch(`${weatherApiRootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`)
-//     })
-    // .then() fill out current day
-    // .then() fill out extended day forecast
-// };
+function displayCurrent(current) {
+    document.getElementsByClassName("title").innerHTML = "";
+    currentWeatherText = document.createElement("h4")
+    currentWeatherText.textContent = "Current Weather"
+    // console.log(parkNameWeather);
+    let weatherInfo = document.createElement("p")
+    weatherInfo.setAttribute("class", "info")
+    weatherInfo.innerHTML = `<img src="http://openweathermap.org/img/wn/10d@2x.png"></img><div> Temp: ${current.temp} F</div>
+    <div> Wind: ${current.wind_speed} MPH</div>
+    <div> Humidity: ${current.humidity}%</div>
+    <div> UV Index: ${current.uvi}</div>`;
+    parkWeather.appendChild(currentWeatherText);
+    parkWeather.appendChild(weatherInfo);
+  }
+  
+  function displayFiveDay(daily) {
+    currentForecastText = document.createElement("h4")
+    currentForecastText.textContent = "Current Weather:"
+    // console.log(daily)
+    //clear existing park forecast
+    // document.getElementsByClassName("future-forecast").innerHTML = "";
+    const forecastName = document.querySelector('.future-forecast');
+    // console.log(forecastName);
+    
+    forecastName.textContent = "5-Day Forecast:";
+    parkWeather.appendChild(forecastName);
+    for (let i =1; i < 6; i++) {
+      let weatherInfo = document.createElement("div")
+      const weatherIcon = document.createElement("img");
+      const icon = daily[i].weather[0].icon
+      console.log(icon);
+      weatherIcon.setAttribute("src", "http://openweathermap.org/img/wn/10d@2x.png");
+      weatherInfo.setAttribute("class", "info")
+      weatherInfo.innerHTML = `<img src="http://openweathermap.org/img/wn/${icon}@2x.png"></img><p></p><p> Temp: ${daily[i].temp.day} F</p>
+      <p> Wind: ${daily[i].wind_speed} MPH</p>
+      <p> Humidity: ${daily[i].humidity}%</p>
+      <p> UV Index: ${daily[i].uvi}</p>`;
+    parkWeather.appendChild(weatherInfo);
+    }
+  }
 
-// const cityNameSubmit = function(cityName) {
-//     // event.preventDefault();
-// //    let cityName = cityNameEl.value.trim();
-//    console.log("City Name is", cityName);
-//    if(cityName){
-//     searchCityWeather(cityName);
-//     cityNameEl.textContent = '';
-//     searchHistoryButton(cityName);
-//    }
-// };
 
-// //  did not like the variable placement at the top of the doc
-// let cityNameEl = document.querySelector("#search-box-text");
-// let searchButton = document.querySelector("#search-box-button");
-// listen for whole area clicks
-// cityInputEl.addEventListener("click", cityNameSubmit)
-// });
-// searchButton.onclick = function() {
-//     console.log("button clicked")
-//     let cityName = cityNameEl.value.trim();
-//     if(cityName){
-//         console.log("City Name is", cityName);
-//         cityNameSubmit(cityName);
-//     }
-// };
-// 09/20 updates
+// pull lat lon from button clicked. enter into weather api.
+// return weather if possible for lat lon
+
+let selectedLatLonArr = []
+const genWeatherCards = parkLatLon.addEventListener('click', function(event) {
+    // console.log(this); console.log(event.target);
+    // document.getElementsByClassName("future-forecast").innerHTML = "";
+    let selectedLatLon = event.target.getAttribute("data-lat-lon") // parkNameWeather = event.target.innerText; //console.log(parkNameWeather);
+    console.log(selectedLatLon);
+    // split lat -long from button
+    selectedLatLonArr = selectedLatLon.split(",")
+    console.log("split lat lon", selectedLatLonArr);
+    //assign lat long to variables
+    let latPark = selectedLatLonArr[0].substr(4,9);
+    console.log(latPark);
+    let lonPark = selectedLatLonArr[1].substr(6,9);
+    console.log(lonPark);
+    // weather call begin
+    fetch(`${weatherApiRootUrl}/data/2.5/onecall?lat=${latPark}&lon=${lonPark}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`)
+    .then(response => response.json())
+    .then(body => {
+        const current = body.current;
+        const daily = body.daily;
+        console.log("current", current, "daily Weather", daily)
+        displayCurrent(current);
+        displayFiveDay(daily);
+    })
+})
+// end weather section
+
 // function to create buttons of Parks in the state. Click on one to see weather and 
-let searchId = 0;
-//pulls descripion, activities,and parkName and places them on-click
+let searchId = 1;
+//pulls description, activities,and parkName and places them on-click
 const createOnPackClick = function(activities,description,parkName){
    return function () {
        document.querySelector("#parkName").innerHTML = parkName;
@@ -79,13 +96,14 @@ const createOnPackClick = function(activities,description,parkName){
 }
 
 const genNationalParkNameButtons = function(NpsName, latLon, activities, description) {
-    let mainBodyEl = document.querySelector("#body");
+    let mainBodyEl = document.querySelector("#park-buttons");
     let NpsNameEl = document.createElement("button");
     NpsNameEl.setAttribute("id", "natPark"+searchId++);
     NpsNameEl.setAttribute("type", "Submit");
-    NpsNameEl.classList = "btn btn-secondary text-center";
+    NpsNameEl.classList = "btn btn-secondary text-center col-6 park-button";
+    // add if statement to shorten park name if over X amount of characters
     NpsNameEl.textContent = NpsName;
-    NpsNameEl.setAttribute("data-latlon", latLon)
+    NpsNameEl.setAttribute("data-lat-lon", latLon)
     NpsNameEl.addEventListener("click", createOnPackClick(activities, description,NpsName));
     mainBodyEl.appendChild(NpsNameEl);
 }; 
@@ -94,24 +112,17 @@ const genNationalParkNameButtons = function(NpsName, latLon, activities, descrip
 //     NpsNameEl.setAttribute("data-latlon", latLon)
 // }
 
+let searchIdAct = 1;
 const genParkActivities = function(parkActivities) {
     let mainBodyEl = document.querySelector("#activities");
-
-    let searchId = 0;
     let NpsActivityEl = document.createElement("div")
-    NpsActivityEl.setAttribute("id", "natParkActivity"+searchId++);
+    NpsActivityEl.setAttribute("id", "natParkActivity"+searchIdAct++);
     NpsActivityEl.setAttribute("type", "Submit");
-    NpsActivityEl.classList = "card-title text-center";
+    NpsActivityEl.classList = "card-title text-center col-6";
     NpsActivityEl.textContent = parkActivities;
     mainBodyEl.appendChild(NpsActivityEl);
 };
 
-//
-
-
-
-
-//
 const NPSBaseLinkState = "https://developer.nps.gov/api/v1/parks?stateCode=";
 const NPSBaseLink = "https://developer.nps.gov/api/v1/parks?"; //removed parkCode= testing
 const NPSAfterPark = "&api_key="; //&limit=100
@@ -123,16 +134,13 @@ function change_stateName(value){
 }
 function searchParks() {
     searchNPSApi(testParkSearch);
-
 }
 
-//
 function getState(selectObject) {
     let value = selectObject.value;
     let testParkSearch=value;
     document.getElementById("state").innerHTML = "You selected: " + value;
-    console.log(value);
-
+    // console.log(value);
 }
 
 //
@@ -145,56 +153,27 @@ let parkLatLongsReturned = [];
 
 function searchNPSApi() {
     let NPSApiCall = NPSBaseLinkState + testParkSearch + NPSAfterPark + NPSApiKey;
-    console.log(NPSApiCall)
+    // console.log(NPSApiCall)
     fetch(NPSApiCall)
     .then(response => response.json())
     .then(body => { //test response later
-        console.log(body.data);
+        // console.log(body.data); 
         // show park names
         // body.data.forEach((parkName) => {genNationalParkNameButtons(parkName.fullName) } );
         //update park name array
         body.data.forEach((parkName) => {parkNamesReturned.push(parkName.fullName) } );
+        // console.log(parkNamesReturned);
         //update lat long array to match against
         body.data.forEach((saveLatLon) => {parkLatLongsReturned.push(saveLatLon.latLong) } );
-        // console.log(parkNamesReturned);
-        console.log("Test begin");
+        // console.log(parkLatLongsReturned);
         // body.data.forEach((parkName) => {console.log(parkName.fullName), console.log(parkName.latLong) } );
-        document.querySelector("#body").innerHTML = "";
-
+        document.querySelector("#park-buttons").innerHTML = "";
         // body.data.forEach((parkName) => {console.log(parkName.fullName), addLatLonToParkName(parkName.latLong) } );
         //Added activities and description
         body.data.forEach((parkName) => { genNationalParkNameButtons(parkName.fullName, parkName.latLong, parkName.activities, parkName.description) } );
-        // let NPSId = body.data[0].id;
-        // let latLong = body.data[0].latLong;
-        console.log(body.data[0].latLong)
+        // console.log(body.data[0].latLong)
         let lon = body.data[0].longitude;
         let lat = body.data[0].latitude;
-        // console.log(lat, lon);
-
-        // let NPSId = data[0][0].id; get activities https://www.nps.gov/subjects/developer/api-documentation.htm#/activities/getActivities
-        // console.log(NPSId);
-        // console.log(lat,lon);
-        // let activities = data[0].activities;
-        // console.log(activities);
-
-        //once the park is picked from the list/drop down search then finish the activites. 
-        // body.data[0].activities.forEach((activity) => { console.log(activity.name) } )
-     // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
     })
-    //Fetch from State code
-
-
-    // .then(function (response){
-    //     if(response.ok)
-    //     console.log(response);
-    //    response.json()
-    // })
-    // .then(function (body){
-    //     console.log('body', body);
-    //     let lon = data[0].longitude;
-    //     let lat = data[0].latitude;
-    //     console.log(lat,lon);
-    // })
 }
 
-// NPS noties needs [0].actiities for activities create little cards with the name of them.

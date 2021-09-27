@@ -37,7 +37,7 @@ function displayCurrent(current) {
 }
 
 function displayFiveDay(daily) {
-  console.log(daily)
+  // console.log(daily)
   const forecastName = document.querySelector('#forecastName');
   forecastName.textContent = "5-Day Forecast:"
   forecastElement.appendChild(forecastName);
@@ -56,18 +56,18 @@ function displayFiveDay(daily) {
   }
 }
 
-function searchCityWeather() {
+function searchCityWeather(lat, lon) {
 /* link Lat and Log from global variable*/
     const lat = body[0].lat;
     const lon = body[0].lon;
-    console.log(lat, lon);
+    // console.log(lat, lon);
     return fetch(`${weatherApiRootUrl}/data/2.5/onecall?lat=${lat}&lon=${lon}&units=imperial&exclude=minutely,hourly&appid=${weatherApiKey}`)
   })
   .then(function (res) {
     return res.json();
   })
   .then(function (body) {
-    console.log(body)
+    // console.log(body)
     const current = body.current;
     const daily = body.daily;
     displayCurrent(current);
