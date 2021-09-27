@@ -151,7 +151,7 @@ function getState(selectObject) {
 let parkNamesReturned = [];
 let parkLatLongsReturned = [];
 
-function searchNPSApi(stateSearched) {
+function searchNPSApi() {
     let NPSApiCall = NPSBaseLinkState + testParkSearch + NPSAfterPark + NPSApiKey;
     // console.log(NPSApiCall)
     fetch(NPSApiCall)
